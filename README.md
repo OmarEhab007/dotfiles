@@ -44,6 +44,16 @@ The configs guard these with `command -v`, so missing tools degrade gracefully.
 
 ### tmux
 
+### Fonts
+
+The terminal configs use Nerd Fonts for icons: **VictorMono Nerd Font** (kitty)
+and **Lilex Nerd Font** (ghostty). `bootstrap.sh` installs both — via brew casks
+on macOS, and from the [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts)
+release zips into `~/.local/share/fonts` on Linux. After install, select the font
+in your terminal's preferences if it isn't picked up automatically.
+
+### tmux
+
 `bootstrap.sh` installs oh-my-tmux automatically. To do it by hand:
 
 ```bash

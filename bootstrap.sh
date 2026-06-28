@@ -5,6 +5,30 @@ set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Nerd Fonts referenced by the terminal configs (kitty: VictorMono, ghostty: Lilex)
+NERD_FONTS=(VictorMono Lilex)
+NERD_FONTS_VERSION="v3.4.0"
+
+install_fonts_macos() {
+  brew install --cask font-victor-mono-nerd-font font-lilex-nerd-font || \
+    echo "skip: install Nerd Font casks manually if the above failed"
+}
+
+install_fonts_linux() {
+  local dir="$HOME/.local/share/fonts"
+  mkdir -p "$dir"
+  for f in "${NERD_FONTS[@]}"; do
+    if ls "$dir/${f}"*Nerd* >/dev/null 2>&1; then
+      echo "ok: $f Nerd Font already present"; continue
+    fi
+    local url="https://github.com/ryanoasis/nerd-fonts/releases/download/${NERD_FONTS_VERSION}/${f}.zip"
+    echo "Installing $f Nerd Font..."
+    curl -fL "$url" -o "/tmp/${f}.zip" && unzip -oq "/tmp/${f}.zip" -d "$dir/${f}NerdFont" \
+      && rm -f "/tmp/${f}.zip" || echo "skip: could not fetch $f Nerd Font"
+  done
+  command -v fc-cache >/dev/null 2>&1 && fc-cache -f "$dir" >/dev/null 2>&1 || true
+}
+
 install_macos() {
   command -v brew >/dev/null 2>&1 || {
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -12,6 +36,7 @@ install_macos() {
   brew install \
     zsh tmux neovim starship fish htop fastfetch \
     fzf fd ripgrep bat eza zoxide atuin btop dust git-delta git kitty
+  install_fonts_macos
 }
 
 install_dnf() {
@@ -30,10 +55,12 @@ install_dnf() {
   # Install one at a time so a single missing package doesn't abort the rest.
   for pkg in \
     zsh tmux neovim fish htop fastfetch \
-    fzf fd-find ripgrep bat eza zoxide atuin btop git git-delta kitty starship; do
+    fzf fd-find ripgrep bat eza zoxide atuin btop git git-delta kitty starship \
+    curl unzip fontconfig; do
     sudo dnf install -y "$pkg" || echo "skip: $pkg not available via dnf"
   done
   echo "Note on Fedora: 'fd' may be /usr/bin/fdfind and 'bat' may be /usr/bin/batcat."
+  install_fonts_linux
 }
 
 case "$OSTYPE" in
