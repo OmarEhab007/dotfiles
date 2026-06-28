@@ -1,0 +1,40 @@
+# custom-shader = ./crt-shader.ghsl
+initial-window = false
+
+alpha-blending = linear-corrected
+
+background-opacity = 0.95
+background-blur-radius = 50
+
+# theme = rose-pine
+config-file = "colors/eldritch"
+
+
+font-size = 18
+font-family = "Lilex Nerd Font Mono"
+
+quick-terminal-position = "left"
+quick-terminal-animation-duration = 0
+quick-terminal-autohide = false
+
+copy-on-select = clipboard
+clipboard-read = allow
+clipboard-write = allow
+
+scrollback-limit = 1000000000
+
+window-colorspace = "display-p3"
+window-inherit-font-size = false
+window-padding-x = 10
+window-save-state = always
+window-title-font-family = "Lilex Nerd Font Mono"
+
+mouse-hide-while-typing = true
+macos-non-native-fullscreen = true
+macos-option-as-alt = true
+macos-titlebar-style = tabs
+macos-titlebar-proxy-icon = visible
+
+keybind = global:cmd+control+alt+t=toggle_quick_terminal
+keybind = super+ctrl+,=reload_config
+keybind = super+ctrl+equal=close_surface

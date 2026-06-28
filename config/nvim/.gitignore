@@ -1,0 +1,21 @@
+# OS / editor cruft
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Local/secret overrides (do not version machine-specific or sensitive config)
+lua/config/local.lua
+*.local.lua
+.env
+http-client.env.json
+
+# Neovim runtime/state that should not be tracked
+spell/
+shada/
+*.shada
+tags
+
+# jdtls per-project workspaces are stored under ~/.cache, not here, but guard anyway
+.jdtls/
+workspace/

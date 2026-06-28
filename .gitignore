@@ -1,0 +1,8 @@
+.DS_Store
+*.bak
+*.swp
+# never commit secrets
+.zsh_secrets
+**/credentials.json
+**/*.key
+**/*.pem
