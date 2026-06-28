@@ -1,10 +1,6 @@
 # Fast interactive shell for Kitty + tmux + Neovim.
 
-# -- Homebrew and PATH ---------------------------------------------------------
-
-export HOMEBREW_PREFIX="/opt/homebrew"
-export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
-export HOMEBREW_REPOSITORY="/opt/homebrew"
+# -- PATH ---------------------------------------------------------------------
 
 typeset -U path PATH
 path=(
@@ -16,13 +12,23 @@ path=(
   "$HOME/.codeium/windsurf/bin"
   "$HOME/.lmstudio/bin"
   "$HOME/Development/flutter/bin"
-  "/opt/homebrew/bin"
-  "/opt/homebrew/sbin"
-  "/opt/homebrew/opt/ruby/bin"
-  "/opt/homebrew/opt/openjdk@21/bin"
-  "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
   $path
 )
+
+# macOS: Homebrew + JetBrains Toolbox
+if [[ "$OSTYPE" == darwin* ]]; then
+  export HOMEBREW_PREFIX="/opt/homebrew"
+  export HOMEBREW_CELLAR="/opt/homebrew/Cellar"
+  export HOMEBREW_REPOSITORY="/opt/homebrew"
+  path=(
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+    "/opt/homebrew/opt/ruby/bin"
+    "/opt/homebrew/opt/openjdk@21/bin"
+    "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+    $path
+  )
+fi
 export PATH
 
 [[ -r "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
@@ -38,7 +44,7 @@ export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
 export BUN_INSTALL="$HOME/.bun"
-export JAVA_HOME="/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
+[[ "$OSTYPE" == darwin* ]] && export JAVA_HOME="/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
 
 # Secrets should live outside dotfiles, for example in ~/.zsh_secrets.
 [[ -r "$HOME/.zsh_secrets" ]] && source "$HOME/.zsh_secrets"

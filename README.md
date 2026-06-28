@@ -1,6 +1,6 @@
 # dotfiles
 
-My personal configuration files for macOS.
+My personal configuration files for **macOS** and **Red Hat / Fedora (dnf)**.
 
 ## Contents
 
@@ -19,15 +19,32 @@ My personal configuration files for macOS.
 ```bash
 git clone https://github.com/OmarEhab007/dotfiles ~/dotfiles
 cd ~/dotfiles
+./bootstrap.sh   # installs tools (brew on macOS, dnf on Fedora/RHEL) + oh-my-zsh + oh-my-tmux, then symlinks
+```
+
+Already have the tools? Just symlink:
+
+```bash
 ./install.sh
 ```
 
 `install.sh` symlinks each file into place and backs up anything it would
 overwrite to `~/.dotfiles-backup/<timestamp>/`.
 
+### Red Hat / Fedora notes
+
+`bootstrap.sh` installs via `dnf` (enabling the `atim/starship` and `atim/eza`
+COPR repos for those two). A few packages differ by name on Fedora:
+
+- `fd` is installed as `fd-find` (binary `fdfind`)
+- `bat` may install as `batcat`
+
+The configs guard these with `command -v`, so missing tools degrade gracefully.
+`karabiner` is macOS-only — its symlink on Linux is harmless (nothing reads it).
+
 ### tmux
 
-tmux depends on oh-my-tmux. After install:
+`bootstrap.sh` installs oh-my-tmux automatically. To do it by hand:
 
 ```bash
 git clone https://github.com/gpakosz/.tmux.git ~/.local/share/tmux/oh-my-tmux
