@@ -16,7 +16,15 @@ install_macos() {
 
 install_dnf() {
   sudo dnf install -y dnf-plugins-core || true
-  # COPR repos for tools not always in the base Fedora repos
+  # RHEL/CentOS/Rocky/Alma: most of these tools live in EPEL; COPR needs it too.
+  # CRB (CodeReady Builder) provides build deps several EPEL packages need.
+  if ! grep -qi fedora /etc/os-release; then
+    local ver; ver="$(. /etc/os-release && echo "${VERSION_ID%%.*}")"
+    sudo dnf install -y "https://dl.fedoraproject.org/pub/epel/epel-release-latest-${ver}.noarch.rpm" || true
+    sudo dnf config-manager --set-enabled crb 2>/dev/null \
+      || sudo dnf config-manager --set-enabled powertools 2>/dev/null || true
+  fi
+  # COPR repos for tools not in EPEL/base
   sudo dnf copr enable -y atim/starship || true
   sudo dnf copr enable -y atim/eza || true
   # Install one at a time so a single missing package doesn't abort the rest.
